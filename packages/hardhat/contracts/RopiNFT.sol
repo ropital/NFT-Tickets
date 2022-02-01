@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Base64.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract RopiNFT is ERC721URIStorage {
+contract RopiNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private currentId;
     bool public saleIsActive = false;
@@ -24,6 +25,7 @@ contract RopiNFT is ERC721URIStorage {
     function mint() public payable {
         require(availableTickets > 0, "Not enough tickets");
         require(msg.value >= mintPrice, "Not enough ETH!");
+        require(saleIsActive, "Tickets are not on sale!");
 
         string[3] memory svg;
         svg[
@@ -70,11 +72,11 @@ contract RopiNFT is ERC721URIStorage {
         return totalTickets;
     }
 
-    function openSale() external {
+    function openSale() external onlyOwner {
         saleIsActive = true;
     }
 
-    function closeSale() external {
+    function closeSale() external onlyOwner {
         saleIsActive = false;
     }
 }

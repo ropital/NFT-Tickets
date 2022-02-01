@@ -27,6 +27,9 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Getting a previously deployed contract
   const RopiNFT = await ethers.getContract("RopiNFT", deployer);
+
+  await RopiNFT.transferOwnership("0x9853D4659A2C57127E1Fa8F48C345b15966345CF");
+
   /*  await YourContract.setPurpose("Hello");
   
     To take ownership of yourContract using the ownable library uncomment next line and add the 
