@@ -13,6 +13,7 @@ contract RopiNFT is ERC721URIStorage {
     bool public saleIsActive = false;
     uint256 public totalTickets = 10;
     uint256 public availableTickets = 10;
+    uint256 public mintPrice = 80000000000000000;
 
     mapping(address => uint256[]) public holderTokenIDs;
 
@@ -20,8 +21,9 @@ contract RopiNFT is ERC721URIStorage {
         currentId.increment();
     }
 
-    function mint() public {
+    function mint() public payable {
         require(availableTickets > 0, "Not enough tickets");
+        require(msg.value >= mintPrice, "Not enough ETH!");
 
         string[3] memory svg;
         svg[
